@@ -26,18 +26,12 @@ class FeatureExtraction(Preprocessing):
         try:
             b, _ = librosa.core.load(path + name, sr=self.SAMPLE_RATE)
             assert _ == self.SAMPLE_RATE
-            ft1 = librosa.feature.mfcc(b, sr=self.SAMPLE_RATE, n_mfcc=20)
-            ft2 = librosa.feature.zero_crossing_rate(b)[0]
-            ft3 = librosa.feature.spectral_rolloff(b)[0]
-            ft4 = librosa.feature.spectral_centroid(b)[0]
-            ft1_trunc = np.hstack((np.mean(ft1, axis=1), np.std(ft1, axis=1), skew(ft1, axis=1), np.max(ft1, axis=1), np.min(ft1, axis=1)))
-            ft2_trunc = np.hstack((np.mean(ft2), np.std(ft2), skew(ft2), np.max(ft2), np.min(ft2)))
-            ft3_trunc = np.hstack((np.mean(ft3), np.std(ft3), skew(ft3), np.max(ft3), np.min(ft3)))
-            ft4_trunc = np.hstack((np.mean(ft4), np.std(ft4), skew(ft4), np.max(ft4), np.min(ft4)))
-            return pd.Series(np.hstack((ft1_trunc, ft2_trunc, ft3_trunc, ft4_trunc)))
+            gmm = librosa.feature.mfcc(b, sr=self.SAMPLE_RATE, n_mfcc=20)
+            return pd.Series(
+                np.hstack((np.mean(gmm, axis=1), np.std(gmm, axis=1), skew(gmm, axis=1), np.median(gmm, axis=1))))
         except:
             print('bad file')
-            return pd.Series([0]*115)
+            return pd.Series([0] * 80)
 
     def extract_features(self, files, path):
         features = {}
