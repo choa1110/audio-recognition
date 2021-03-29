@@ -53,7 +53,7 @@ PyAudio==0.2.11
 pycairo==1.16.3
 pycosat==0.6.3
 pycparser==2.18
-Pygments==2.2.0
+Pygments==2.7.4
 pygobject==3.28.3
 pyOpenSSL==18.0.0
 pyparsing==2.2.0
